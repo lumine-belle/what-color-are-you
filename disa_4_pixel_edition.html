@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISA & 4 Темперамент | Пиксел Зан Төлөвийн Тест</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Press Start 2P (numbers/accents), JetBrains Mono & Noto Sans (Crisp Cyrillic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-beige: #F5EFE6;
+            --card-cream: #FFFDF9;
+            --ink-black: #1A1A1A;
+            --disa-red: #E64848;
+            --disa-yellow: #F4C430;
+            --disa-green: #4CAF68;
+            --disa-blue: #4A89DC;
+        }
+
+        body {
+            background-color: var(--bg-beige);
+            background-image: 
+                radial-gradient(#D9CFC1 1.5px, transparent 1.5px),
+                radial-gradient(#D9CFC1 1.5px, var(--bg-beige) 1.5px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            color: var(--ink-black);
+            font-family: 'Noto Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-pixel-num {
+            font-family: 'Press Start 2P', 'JetBrains Mono', monospace;
+        }
+
+        .font-mono-cyr {
+            font-family: 'JetBrains Mono', 'Noto Sans', monospace;
+        }
+
+        /* Retro Pixel Card & Border System */
+        .pixel-box {
+            background-color: var(--card-cream);
+            border: 3px solid var(--ink-black);
+            box-shadow: 4px 4px 0px var(--ink-black);
+        }
+
+        .pixel-box-sm {
+            background-color: var(--card-cream);
+            border: 2.5px solid var(--ink-black);
+            box-shadow: 3px 3px 0px var(--ink-black);
+        }
+
+        .pixel-btn {
+            border: 3px solid var(--ink-black);
+            box-shadow: 4px 4px 0px var(--ink-black);
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .pixel-btn:hover:not(:disabled) {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px var(--ink-black);
+        }
+
+        .pixel-btn:active:not(:disabled) {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0px var(--ink-black);
+        }
+
+        .pixel-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* Outlined Retro Title Text like CakeResume */
+        .retro-outline-text {
+            color: #FFFFFF;
+            text-shadow:
+                -2px -2px 0 #1A1A1A,
+                 2px -2px 0 #1A1A1A,
+                -2px  2px 0 #1A1A1A,
+                 2px  2px 0 #1A1A1A,
+                 0px  3px 0 #1A1A1A,
+                 3px  0px 0 #1A1A1A,
+                 4px  4px 0 #1A1A1A;
+        }
+
+        /* Crisp Pixel Rendering for SVGs */
+        .pixel-svg {
+            shape-rendering: crispEdges;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EAE0D2;
+            border-left: 2px solid #1A1A1A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1A1A1A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#1A1A1A] selection:text-[#F4C430]">
+
+    <!-- Top Retro Arcade Header -->
+    <header class="sticky top-0 z-40 bg-[#FFFDF9] border-b-[3px] border-[#1A1A1A]">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2">
+            <!-- Brand Logo -->
+            <button onclick="switchMainView('quiz')" class="flex items-center gap-2.5 text-left group">
+                <div class="grid grid-cols-2 w-8 h-8 border-[2.5px] border-[#1A1A1A] shadow-[2px_2px_0px_#1A1A1A] group-hover:rotate-3 transition-transform">
+                    <span class="bg-[#E64848] border-r border-b border-[#1A1A1A]"></span>
+                    <span class="bg-[#F4C430] border-b border-[#1A1A1A]"></span>
+                    <span class="bg-[#4CAF68] border-r border-[#1A1A1A]"></span>
+                    <span class="bg-[#4A89DC]"></span>
+                </div>
+                <div>
+                    <div class="font-black text-sm sm:text-base tracking-tight leading-none text-[#1A1A1A]">DISA × ТЕМПЕРАМЕНТ</div>
+                    <div class="text-[11px] font-bold text-stone-600 mt-0.5">Тэнэгүүдээр хүрээлэгдсэн нь</div>
+                </div>
+            </button>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center gap-1.5 sm:gap-2">
+                <button onclick="switchMainView('quiz')" id="nav-quiz" class="nav-tab pixel-btn px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-extrabold bg-[#1A1A1A] text-white">
+                    1. ТЕСТ (20)
+                </button>
+                <button onclick="switchMainView('guide')" id="nav-guide" class="nav-tab pixel-btn px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-extrabold bg-[#FFFDF9] text-[#1A1A1A]">
+                    2. 4 ӨНГӨ
+                </button>
+                <button onclick="switchMainView('simulator')" id="nav-simulator" class="nav-tab pixel-btn px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-extrabold bg-[#FFFDF9] text-[#1A1A1A]">
+                    3. ХОС БА НИЙЦЭЛ
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Toast Notification Banner (No alert() used) -->
+    <div id="toast-msg" class="fixed bottom-5 right-5 z-50 hidden pixel-box bg-[#1A1A1A] text-white px-4 py-3 text-xs sm:text-sm font-bold flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-[#4CAF68] inline-block"></span>
+        <span id="toast-text">Амжилттай хуулагдлаа!</span>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-3 sm:px-6 py-6 sm:py-10">
+
+        <!-- ========================================================= -->
+        <!-- VIEW 1: INTRO + 20-QUESTION SCENARIO QUIZ + RESULT CARD   -->
+        <!-- ========================================================= -->
+        <section id="view-quiz">
+
+            <!-- Intro Hero Box -->
+            <div id="quiz-intro" class="pixel-box p-5 sm:p-8 mb-6 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="inline-block bg-[#1A1A1A] text-[#F4C430] text-xs font-extrabold px-3 py-1 mb-3 tracking-wide">
+                            ★ ӨДӨР ТУТМЫН 20 БОДИТ НӨХЦӨЛ БАЙДАЛ ★
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-black text-[#1A1A1A] leading-tight mb-3">
+                            Та ямар өнгийн хүн бэ?
+                        </h1>
+                        <p class="text-sm sm:text-base text-stone-700 leading-relaxed mb-5">
+                            Хүн бүр ганцхан өнгөтэй байдаггүй — ихэнх хүмүүс <strong>2-3 өнгөний хослол</strong> байдаг. Өдөр тутмын амьдралд тохиолддог 20 энгийн асуултад хариулж, өөрийн <strong>DISA өнгөний хувь</strong>, <strong>Гиппократын темперамент</strong> болон <strong>хосын харилцааны нийцлээ</strong> мэдэж аваарай!
+                        </p>
+
+                        <!-- 4 Color Mini Badges -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 text-left">
+                            <div class="bg-[#E64848]/15 border-2 border-[#1A1A1A] p-2">
+                                <div class="font-black text-xs text-[#B91C1C]">■ УЛААН</div>
+                                <div class="text-[11px] font-bold text-stone-700">Холерик • Шийдэмгий</div>
+                            </div>
+                            <div class="bg-[#F4C430]/25 border-2 border-[#1A1A1A] p-2">
+                                <div class="font-black text-xs text-[#92400E]">■ ШАР</div>
+                                <div class="text-[11px] font-bold text-stone-700">Сангвиник • Өөдрөг</div>
+                            </div>
+                            <div class="bg-[#4CAF68]/20 border-2 border-[#1A1A1A] p-2">
+                                <div class="font-black text-xs text-[#166534]">■ НОГООН</div>
+                                <div class="text-[11px] font-bold text-stone-700">Флегматик • Тайван</div>
+                            </div>
+                            <div class="bg-[#4A89DC]/15 border-2 border-[#1A1A1A] p-2">
+                                <div class="font-black text-xs text-[#1E40AF]">■ ЦЭНХЭР</div>
+                                <div class="text-[11px] font-bold text-stone-700">Меланхолик • Нямбай</div>
+                            </div>
+                        </div>
+
+                        <button onclick="startQuiz()" class="pixel-btn w-full sm:w-auto bg-[#E64848] hover:bg-[#d63c3c] text-white font-black text-base sm:text-lg px-8 py-4 tracking-wide">
+                            ТЕСТ ЭХЛҮҮЛЭХ (20 АСУУЛТ) ▶
+                        </button>
+                    </div>
+
+                    <!-- Decorative Pixel Mascot Group -->
+                    <div class="shrink-0 bg-[#F5EFE6] border-[3px] border-[#1A1A1A] p-4 shadow-[4px_4px_0px_#1A1A1A]">
+                        <div class="grid grid-cols-2 gap-2" id="intro-mascots"></div>
+                        <div class="text-center font-pixel-num text-[9px] text-[#1A1A1A] mt-2">PLAYER SELECT</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Quiz Box (Hidden initially) -->
+            <div id="quiz-active" class="hidden pixel-box p-5 sm:p-8">
+                <!-- Pixel Progress Header -->
+                <div class="flex items-center justify-between mb-2">
+                    <span class="bg-[#1A1A1A] text-white text-xs font-extrabold px-2.5 py-1">
+                        НӨХЦӨЛ БАЙДАЛ <span id="q-current" class="font-pixel-num text-[#F4C430] ml-1">1</span> / 20
+                    </span>
+                    <span id="q-percent" class="font-pixel-num text-xs font-bold text-[#1A1A1A]">5%</span>
+                </div>
+
+                <!-- Segmented 20-block Pixel Progress Bar -->
+                <div id="pixel-progress-blocks" class="grid grid-cols-20 gap-1 p-1.5 bg-[#EAE0D2] border-[2.5px] border-[#1A1A1A] mb-6" style="grid-template-columns: repeat(20, minmax(0, 1fr));">
+                    <!-- 20 blocks injected by JS -->
+                </div>
+
+                <!-- Scenario Prompt -->
+                <div class="bg-[#F5EFE6] border-[2.5px] border-[#1A1A1A] p-4 sm:p-5 mb-5">
+                    <div class="text-xs font-extrabold uppercase tracking-wider text-stone-500 mb-1">
+                        Ийм нөхцөлд та яах вэ?
+                    </div>
+                    <h2 id="q-text" class="text-base sm:text-xl font-black text-[#1A1A1A] leading-snug">
+                        <!-- Question text -->
+                    </h2>
+                </div>
+
+                <!-- 4 Scenario Options -->
+                <div id="q-options" class="space-y-3">
+                    <!-- Option cards injected by JS -->
+                </div>
+
+                <!-- Navigation Footer -->
+                <div class="flex items-center justify-between mt-7 pt-4 border-t-[2.5px] border-dashed border-stone-400">
+                    <button id="btn-prev" onclick="goPrevQuestion()" class="pixel-btn bg-[#FFFDF9] text-[#1A1A1A] font-extrabold text-xs sm:text-sm px-4 py-2.5">
+                        ◀ ӨМНӨХ
+                    </button>
+                    <span class="text-xs font-bold text-stone-500 text-right">
+                        Өөрт хамгийн ойр санагдсан 1 хариултыг дарна уу
+                    </span>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- CAKERESUME STYLE BENTO-GRID INFOGRAPHIC RESULT CARD       -->
+            <!-- ========================================================= -->
+            <div id="quiz-result" class="hidden">
+                <!-- Action Bar Above Poster -->
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <button onclick="restartQuiz()" class="pixel-btn bg-[#FFFDF9] text-[#1A1A1A] font-extrabold text-xs sm:text-sm px-4 py-2.5">
+                        ↻ ДАХИН ӨГӨХ
+                    </button>
+                    <button onclick="copyResultSummary()" class="pixel-btn bg-[#1A1A1A] text-[#F4C430] font-extrabold text-xs sm:text-sm px-4 py-2.5">
+                        📋 ҮР ДҮНГ ХУУЛАХ
+                    </button>
+                </div>
+
+                <!-- MAIN INFOGRAPHIC POSTER (Matches reference image layout & borders) -->
+                <div id="result-poster" class="border-[4px] border-[#1A1A1A] shadow-[8px_8px_0px_#1A1A1A] p-4 sm:p-7 transition-colors">
+
+                    <!-- Top Brand Strip -->
+                    <div class="flex items-center justify-between text-xs font-black tracking-wider uppercase mb-3 opacity-90">
+                        <span>DISA × ТЕМПЕРАМЕНТ ПРОФАЙЛ</span>
+                        <span class="font-pixel-num text-[10px]">20/20 COMPLETE</span>
+                    </div>
+
+                    <!-- HERO BANNER: Title + Tags + Pixel Character Avatar -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 items-stretch mb-5">
+                        <!-- Left Title & Hashtags -->
+                        <div class="md:col-span-7 flex flex-col justify-between">
+                            <div>
+                                <div class="text-sm sm:text-base font-black uppercase tracking-wide mb-1" id="res-kicker">
+                                    ТАНЫ ЗАН ТӨЛӨВ БОЛ...
+                                </div>
+                                <h2 id="res-main-title" class="retro-outline-text text-2xl sm:text-4xl font-black uppercase leading-tight tracking-tight mb-3">
+                                    УЛААН - ШАР
+                                </h2>
+                                <div id="res-archetype-name" class="inline-block bg-[#FFFDF9] border-[2.5px] border-[#1A1A1A] px-3 py-1 font-black text-xs sm:text-sm text-[#1A1A1A] mb-3 shadow-[2px_2px_0px_#1A1A1A]">
+                                    Хурдлагч Манлайлагч
+                                </div>
+                            </div>
+
+                            <!-- Pixel Hashtags -->
+                            <div id="res-hashtags" class="flex flex-wrap gap-1.5 my-2">
+                                <!-- Hashtags injected by JS -->
+                            </div>
+
+                            <!-- Dominant Highlight Box -->
+                            <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] p-3 mt-2 shadow-[3px_3px_0px_#1A1A1A]">
+                                <div class="text-xs font-extrabold text-stone-600">ХАМГИЙН ИХ ДАВАМГАЙЛАХ ШИНЖ:</div>
+                                <div id="res-dominant-summary" class="text-sm sm:text-base font-black text-[#1A1A1A] mt-0.5">
+                                    <!-- Dominant trait text -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Pixel Character Card (Like Strawberry Cake mascot box) -->
+                        <div class="md:col-span-5 bg-[#FFF9D6] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] flex flex-col justify-between overflow-hidden">
+                            <div class="bg-[#1A1A1A] text-white text-[11px] font-extrabold px-3 py-1.5 flex justify-between items-center">
+                                <span>ТАНЫ ПИКСЕЛЬ ДҮР</span>
+                                <span id="res-temperament-badge" class="text-[#F4C430]">ХОЛЕРИК</span>
+                            </div>
+                            <div class="flex-grow flex items-center justify-center p-4" id="res-avatar-container">
+                                <!-- Custom SVG Pixel Character -->
+                            </div>
+                            <div class="bg-[#3D2C2E] text-white text-center text-xs font-bold py-2 px-2 border-t-[3px] border-[#1A1A1A]" id="res-avatar-caption">
+                                Улаан (45%) + Шар (30%)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROW 2: EXACT 4-COLOR PERCENTAGE BREAKDOWN -->
+                    <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] mb-5 overflow-hidden">
+                        <div class="bg-[#1A1A1A] text-white font-extrabold text-xs sm:text-sm px-4 py-2 flex items-center justify-between">
+                            <span>ТАНЫ 4 ӨНГӨНИЙ ЭЗЛЭХ ХУВЬ (ХҮН ДАН ГАНЦ ӨНГӨ БАЙДАГГҮЙ)</span>
+                            <span class="font-pixel-num text-[10px] text-[#F4C430]">100%</span>
+                        </div>
+                        <div class="p-4">
+                            <!-- Stacked Pixel Bar -->
+                            <div id="res-stacked-bar" class="w-full h-7 border-[2.5px] border-[#1A1A1A] flex overflow-hidden mb-4">
+                                <!-- Colored segments -->
+                            </div>
+                            <!-- 4 Individual Color Cards with % -->
+                            <div id="res-color-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                <!-- 4 color breakdown cards -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROW 3: RADAR CHART ("Давуу талуудын зураглал") + WHAT OTHERS SAY -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 mb-5">
+                        <!-- Hexagon Radar Chart Card -->
+                        <div class="md:col-span-6 bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white font-extrabold text-xs sm:text-sm px-4 py-2 text-center">
+                                Давуу талуудын зураглал
+                            </div>
+                            <div class="p-3 flex-grow flex items-center justify-center" id="res-radar-container">
+                                <!-- SVG 6-Axis Radar Chart -->
+                            </div>
+                        </div>
+
+                        <!-- What Colleagues & Friends Say + Temperament Blend -->
+                        <div class="md:col-span-6 flex flex-col gap-4">
+                            <div id="res-colleagues-card" class="border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] p-4 flex-grow">
+                                <div class="font-black text-sm sm:text-base mb-2 underline decoration-2 underline-offset-4">
+                                    Бусад хүмүүс таныг юу гэж хардаг вэ?
+                                </div>
+                                <p id="res-colleagues-text" class="text-xs sm:text-sm font-medium leading-relaxed">
+                                    <!-- Description -->
+                                </p>
+                            </div>
+
+                            <!-- Hippocrates 4 Temperaments Synthesis Box -->
+                            <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] p-4">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <span class="bg-[#1A1A1A] text-[#F4C430] text-[10px] font-extrabold px-2 py-0.5">ГИППОКРАТЫН ОНОЛ</span>
+                                    <span id="res-temp-combo-title" class="font-black text-xs sm:text-sm text-[#1A1A1A]">Холерик - Сангвиник</span>
+                                </div>
+                                <p id="res-temp-combo-desc" class="text-xs sm:text-sm text-stone-700 leading-relaxed">
+                                    <!-- Temperament explanation -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROW 4: COMMUNICATION GUIDE STRIP (Like "Job Search Guide" banner) -->
+                    <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] mb-5 flex flex-col sm:flex-row overflow-hidden">
+                        <div class="bg-[#1A1A1A] text-white font-black text-xs sm:text-sm p-3 sm:w-44 shrink-0 flex items-center justify-center text-center">
+                            Тантай хэрхэн харилцах вэ?
+                        </div>
+                        <div id="res-comm-guide" class="p-3.5 text-xs sm:text-sm font-semibold text-[#1A1A1A] leading-relaxed flex items-center">
+                            <!-- Communication guide text -->
+                        </div>
+                    </div>
+
+                    <!-- ROW 5: 3 MINI METRIC BOXES (Like Recommended Role / Index / Charm) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-5">
+                        <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] overflow-hidden flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white text-xs font-extrabold py-1.5 px-3 text-center">
+                                Тохирох үүрэг / Ажил
+                            </div>
+                            <div id="res-role" class="p-3 text-center text-xs sm:text-sm font-extrabold flex-grow flex items-center justify-center">
+                                <!-- Role -->
+                            </div>
+                        </div>
+
+                        <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] overflow-hidden flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white text-xs font-extrabold py-1.5 px-3 text-center">
+                                Давамгайлах индекс
+                            </div>
+                            <div id="res-index-num" class="p-3 text-center font-pixel-num text-xl sm:text-2xl font-bold flex-grow flex items-center justify-center">
+                                45%
+                            </div>
+                        </div>
+
+                        <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] overflow-hidden flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white text-xs font-extrabold py-1.5 px-3 text-center">
+                                Стрессийн зүйрлэл
+                            </div>
+                            <div id="res-stress-metaphor" class="p-3 text-center text-xs sm:text-sm font-extrabold flex-grow flex items-center justify-center">
+                                <!-- Metaphor -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROW 6: ROMANTIC / COUPLE COMPATIBILITY (Like Work Besties / Just Coworkers) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Best Romantic Match -->
+                        <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] overflow-hidden flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white text-xs sm:text-sm font-extrabold py-2 px-3 text-center flex items-center justify-center gap-1.5">
+                                <span class="text-[#E64848]">♥</span> ХОСЫН ХАРИЛЦААНД ХАМГИЙН САЙН ЗОХИЦОХ ХОС
+                            </div>
+                            <div class="p-4 flex-grow flex flex-col justify-between">
+                                <div class="flex items-center gap-3.5 mb-3" id="res-best-match-header">
+                                    <!-- Avatar + Partner Title -->
+                                </div>
+                                <p id="res-best-match-desc" class="text-xs sm:text-sm text-stone-700 leading-relaxed bg-[#F5EFE6] border-2 border-[#1A1A1A] p-3">
+                                    <!-- Why they match in romance -->
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Challenging / Growth Romantic Match -->
+                        <div class="bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[4px_4px_0px_#1A1A1A] overflow-hidden flex flex-col">
+                            <div class="bg-[#1A1A1A] text-white text-xs sm:text-sm font-extrabold py-2 px-3 text-center flex items-center justify-center gap-1.5">
+                                <span class="text-[#F4C430]">⚡</span> АНХААРАХ ШААРДЛАГАТАЙ ХОС (ЭСРЭГ ТЭСРЭГ)
+                            </div>
+                            <div class="p-4 flex-grow flex flex-col justify-between">
+                                <div class="flex items-center gap-3.5 mb-3" id="res-challenge-match-header">
+                                    <!-- Avatar + Partner Title -->
+                                </div>
+                                <p id="res-challenge-match-desc" class="text-xs sm:text-sm text-stone-700 leading-relaxed bg-[#F5EFE6] border-2 border-[#1A1A1A] p-3">
+                                    <!-- How to make it work -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Poster Footer -->
+                    <div class="mt-5 pt-3 border-t-[3px] border-[#1A1A1A] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-black">
+                        <span class="retro-outline-text text-base sm:text-lg tracking-wide">ТА ЯМАР ӨНГИЙН ХҮН БЭ?</span>
+                        <button onclick="switchMainView('simulator')" class="pixel-btn bg-[#FFFDF9] text-[#1A1A1A] px-3 py-1.5 text-xs font-extrabold">
+                            ХОСЫН НИЙЦЛЭЭ ШАЛГАХ →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 2: 4 COLORS & 4 TEMPERAMENTS ENCYCLOPEDIA GUIDE      -->
+        <!-- ========================================================= -->
+        <section id="view-guide" class="hidden">
+            <div class="pixel-box p-5 sm:p-7 mb-6">
+                <span class="bg-[#1A1A1A] text-[#F4C430] text-xs font-extrabold px-2.5 py-1">ОНОЛЫН ТАЙЛБАР</span>
+                <h2 class="text-2xl sm:text-3xl font-black mt-2 mb-2">4 Өнгө ба Гиппократын 4 Темперамент</h2>
+                <p class="text-sm text-stone-700 leading-relaxed">
+                    Томас Эриксоны <strong>DISA</strong> систем нь МЭӨ 400 онд Гиппократын боловсруулсан <strong>4 темпераментийн онол</strong> дээр суурилдаг. Доорх өнгөнүүд дээр дарж хүмүүсийг биеийн хэлэмж, ярианы хурд болон стресст орсон үеийн үйлдлээр нь хэрхэн танихыг сураарай.
+                </p>
+
+                <!-- Color Switcher Buttons -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-5">
+                    <button onclick="renderGuideTab('red')" id="gtab-red" class="pixel-btn py-3 px-3 font-black text-xs sm:text-sm bg-[#E64848] text-white">
+                        ■ УЛААН (Холерик)
+                    </button>
+                    <button onclick="renderGuideTab('yellow')" id="gtab-yellow" class="pixel-btn py-3 px-3 font-black text-xs sm:text-sm bg-[#FFFDF9] text-[#1A1A1A]">
+                        ■ ШАР (Сангвиник)
+                    </button>
+                    <button onclick="renderGuideTab('green')" id="gtab-green" class="pixel-btn py-3 px-3 font-black text-xs sm:text-sm bg-[#FFFDF9] text-[#1A1A1A]">
+                        ■ НОГООН (Флегматик)
+                    </button>
+                    <button onclick="renderGuideTab('blue')" id="gtab-blue" class="pixel-btn py-3 px-3 font-black text-xs sm:text-sm bg-[#FFFDF9] text-[#1A1A1A]">
+                        ■ ЦЭНХЭР (Меланхолик)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Guide Card -->
+            <div id="guide-content-card" class="pixel-box overflow-hidden">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 3: INTERACTIVE COUPLE & WORK COMPATIBILITY SIMULATOR -->
+        <!-- ========================================================= -->
+        <section id="view-simulator" class="hidden">
+            <div class="pixel-box p-5 sm:p-7 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="bg-[#1A1A1A] text-[#F4C430] text-xs font-extrabold px-2.5 py-1">ХАРИЛЦААНЫ СИМУЛЯТОР</span>
+                    <!-- Mode Toggle: Romance vs Work/Friendship -->
+                    <div class="flex border-[2.5px] border-[#1A1A1A] bg-[#F5EFE6]">
+                        <button onclick="setSimMode('romance')" id="mode-romance" class="px-3 py-1 text-xs font-black bg-[#E64848] text-white">
+                            ♥ ХОСЫН ХАРИЛЦАА
+                        </button>
+                        <button onclick="setSimMode('work')" id="mode-work" class="px-3 py-1 text-xs font-black text-[#1A1A1A]">
+                            💼 АЖИЛ / НАЙЗ НӨХӨД
+                        </button>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-black mb-2">Хоёр өнгөний нийцэл шалгагч</h2>
+                <p class="text-sm text-stone-700 mb-6">
+                    Өөрийн өнгө болон хайртай хүн / хамтрагчийнхаа өнгийг сонгож, та хоёрын харилцааны давуу тал болон зөрчлийг хэрхэн даван туулахыг хараарай.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-11 gap-4 items-center bg-[#F5EFE6] border-[3px] border-[#1A1A1A] p-4">
+                    <!-- Person A -->
+                    <div class="md:col-span-5">
+                        <div class="text-xs font-black uppercase mb-2">1. Миний өнгө:</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setSimPerson('a', 'red')" data-c="red" class="sim-a pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Улаан</button>
+                            <button onclick="setSimPerson('a', 'yellow')" data-c="yellow" class="sim-a pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Шар</button>
+                            <button onclick="setSimPerson('a', 'green')" data-c="green" class="sim-a pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Ногоон</button>
+                            <button onclick="setSimPerson('a', 'blue')" data-c="blue" class="sim-a pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Цэнхэр</button>
+                        </div>
+                    </div>
+
+                    <!-- Swap Button -->
+                    <div class="md:col-span-1 flex justify-center">
+                        <button onclick="swapSimPeople()" title="Байр солих" class="pixel-btn w-10 h-10 bg-[#1A1A1A] text-white font-black flex items-center justify-center">
+                            ⇄
+                        </button>
+                    </div>
+
+                    <!-- Person B -->
+                    <div class="md:col-span-5">
+                        <div class="text-xs font-black uppercase mb-2">2. Хамтрагчийн өнгө:</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setSimPerson('b', 'red')" data-c="red" class="sim-b pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Улаан</button>
+                            <button onclick="setSimPerson('b', 'yellow')" data-c="yellow" class="sim-b pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Шар</button>
+                            <button onclick="setSimPerson('b', 'green')" data-c="green" class="sim-b pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Ногоон</button>
+                            <button onclick="setSimPerson('b', 'blue')" data-c="blue" class="sim-b pixel-btn py-2.5 px-2 text-xs font-black bg-[#FFFDF9]">■ Цэнхэр</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator Output Box -->
+            <div id="sim-result-box" class="pixel-box overflow-hidden">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#FFFDF9] border-t-[3px] border-[#1A1A1A] py-5 mt-10">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-bold text-stone-600">
+            <span>DISA × 4 ТЕМПЕРАМЕНТ • ПИКСЕЛЬ ЗАН ТӨЛӨВИЙН ХӨТӨЧ</span>
+            <span>Томас Эриксоны "Surrounded by Idiots" номоос сэдэвлэв</span>
+        </div>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // 1. PIXEL ART SVG AVATARS GENERATOR (Crisp 16x16 grid characters)
+        // =========================================================================
+        function getPixelAvatarSVG(colorKey, size = 110) {
+            // Each character wears a distinctive retro headgear/accessory matching their DISA color
+            const configs = {
+                red: {
+                    bg: "#FFE4E4",
+                    hatMain: "#E64848",
+                    hatDark: "#B91C1C",
+                    accent: "#F4C430", // Crown / Flame
+                    label: "CROWN"
+                },
+                yellow: {
+                    bg: "#FFF5CC",
+                    hatMain: "#F4C430",
+                    hatDark: "#D97706",
+                    accent: "#E64848", // Party / Sunvisor
+                    label: "SUN"
+                },
+                green: {
+                    bg: "#E2F7E8",
+                    hatMain: "#4CAF68",
+                    hatDark: "#2E7D44",
+                    accent: "#FFFDF9", // Sprout / Leaf hood
+                    label: "LEAF"
+                },
+                blue: {
+                    bg: "#E3EEFC",
+                    hatMain: "#4A89DC",
+                    hatDark: "#2B5B9E",
+                    accent: "#93C5FD", // Glasses / Analyst cap
+                    label: "SPEC"
+                }
+            };
+            const c = configs[colorKey] || configs.red;
+
+            // Custom retro pixel character SVG inspired by the CakeResume mascot
+            let extraHatPixels = '';
+            if (colorKey === 'red') {
+                // Pixel Crown on top
+                extraHatPixels = `
+                    <rect x="5" y="1" width="1" height="2" fill="#F4C430"/>
+                    <rect x="7" y="0" width="2" height="3" fill="#F4C430"/>
+                    <rect x="10" y="1" width="1" height="2" fill="#F4C430"/>
+                    <rect x="5" y="2" width="6" height="1" fill="#1A1A1A"/>
+                `;
+            } else if (colorKey === 'yellow') {
+                // Sunbeams / Star antenna
+                extraHatPixels = `
+                    <rect x="7" y="0" width="2" height="2" fill="#E64848"/>
+                    <rect x="4" y="1" width="1" height="1" fill="#F4C430"/>
+                    <rect x="11" y="1" width="1" height="1" fill="#F4C430"/>
+                `;
+            } else if (colorKey === 'green') {
+                // Little sprout leaf on head
+                extraHatPixels = `
+                    <rect x="7" y="1" width="1" height="2" fill="#2E7D44"/>
+                    <rect x="8" y="0" width="3" height="2" fill="#4CAF68"/>
+                    <rect x="5" y="1" width="2" height="1" fill="#4CAF68"/>
+                `;
+            } else if (colorKey === 'blue') {
+                // Pixel Glasses on face
+                extraHatPixels = `
+                    <rect x="5" y="6" width="2" height="2" fill="#93C5FD"/>
+                    <rect x="9" y="6" width="2" height="2" fill="#93C5FD"/>
+                    <rect x="7" y="6" width="2" height="1" fill="#1A1A1A"/>
+                `;
+            }
+
+            return `
+            <svg width="${size}" height="${size}" viewBox="0 0 16 16" class="pixel-svg mx-auto" xmlns="http://www.w3.org/2000/svg">
+                ${extraHatPixels}
+                <!-- Hood Outer Outline -->
+                <rect x="4" y="2" width="8" height="1" fill="#1A1A1A"/>
+                <rect x="3" y="3" width="10" height="1" fill="#1A1A1A"/>
+                <rect x="2" y="4" width="12" height="6" fill="#1A1A1A"/>
+                <rect x="3" y="10" width="10" height="1" fill="#1A1A1A"/>
+                <!-- Hood Fill -->
+                <rect x="4" y="3" width="8" height="1" fill="${c.hatMain}"/>
+                <rect x="3" y="4" width="10" height="6" fill="${c.hatMain}"/>
+                <rect x="3" y="9" width="10" height="1" fill="${c.hatDark}"/>
+                <!-- Face Cutout -->
+                <rect x="5" y="5" width="6" height="4" fill="#FFFFFF"/>
+                <!-- Cute Stoic Pixel Eyes & Mouth -->
+                <rect x="6" y="6" width="1" height="1" fill="#1A1A1A"/>
+                <rect x="9" y="6" width="1" height="1" fill="#1A1A1A"/>
+                <rect x="7" y="8" width="2" height="1" fill="#1A1A1A"/>
+                ${colorKey === 'blue' ? '<rect x="7" y="6" width="2" height="1" fill="#1A1A1A"/>' : ''}
+                <!-- White Pixel Body -->
+                <rect x="4" y="11" width="8" height="3" fill="#1A1A1A"/>
+                <rect x="5" y="11" width="6" height="2" fill="#FFFFFF"/>
+                <!-- Arms -->
+                <rect x="3" y="11" width="1" height="2" fill="#1A1A1A"/>
+                <rect x="12" y="11" width="1" height="2" fill="#1A1A1A"/>
+                <!-- Legs -->
+                <rect x="5" y="13" width="2" height="2" fill="#1A1A1A"/>
+                <rect x="9" y="13" width="2" height="2" fill="#1A1A1A"/>
+                <rect x="5" y="13" width="1" height="1" fill="#FFFFFF"/>
+                <rect x="10" y="13" width="1" height="1" fill="#FFFFFF"/>
+            </svg>`;
+        }
+
+        // =========================================================================
+        // 2. 20 NATURAL MONGOLIAN EVERYDAY SCENARIO QUESTIONS
+        // =========================================================================
+        const scenarioQuestions = [
+            {
+                q: "Тавилгын дэлгүүрээс шинэ шүүгээ худалдаж аваад гэртээ авчирлаа. Угсрахдаа та яах вэ?",
+                options: [
+                    { text: "Зааврыг нь ч харалгүй хайрцгийг нь задлаад шууд угсарч эхэлнэ.", color: "red" },
+                    { text: "Хөгжим тавиад, найз руугаа залгаж ярингаа хөгжилтэй байдлаар угсарна.", color: "yellow" },
+                    { text: "Гэрийнхнээсээ хэн нэгнийг туслаач гэж гуйгаад, хамтдаа тайван угсарна.", color: "green" },
+                    { text: "Эхлээд бүх эрэг боолтыг тоолж ангилаад, зааврын 1-р алхмаас яг дагана.", color: "blue" }
+                ]
+            },
+            {
+                q: "Амралтын өдрөөр найзуудтайгаа хоол идэхээр боллоо. Ресторан сонгох үед та:",
+                options: [
+                    { text: "“Энэ газар руу явъя, хоол нь хурдан гардаг” гээд шууд шийдчихнэ.", color: "red" },
+                    { text: "“Шинэ нээгдсэн, гоё зураг авхуулах орчинтой газар орцгооё!” гэж санал болгоно.", color: "yellow" },
+                    { text: "“Та хэд хаана идмээр байна, би аль ч газар руу нь дагаад явчихъя” гэнэ.", color: "green" },
+                    { text: "Үнэлгээ, цэс, үнэ ханш болон зогсоолтой эсэхийг нь урьдчилан шалгана.", color: "blue" }
+                ]
+            },
+            {
+                q: "Хотын төвд яарч явтал урд тань маш удаан явдаг машин зам таглаад зогсчихвол:",
+                options: [
+                    { text: "Дохиогоо дуугаргаж, бухимдангуй эгнээгээ хурдан сольж гүйцэж түрүүлнэ.", color: "red" },
+                    { text: "Дуртай дуугаа чангалаад дагаж дуулангаа тэр хооронд утсаараа чат бичнэ.", color: "yellow" },
+                    { text: "“Ямар нэг шалтгаантай л байгаа байх даа” гэж бодоод тайван хүлээнэ.", color: "green" },
+                    { text: "“Дүрэм журам мэддэггүй жолооч нар” гэж дотроо шүүмжлээд өөр тойруу зам хайна.", color: "blue" }
+                ]
+            },
+            {
+                q: "Ажил эсвэл хичээл дээр 4 хүнтэй баг болж, маргааш гэхэд төсөл дуусгах даалгавар авлаа:",
+                options: [
+                    { text: "Шууд л хэн юу хийхийг хуваарилж, “За хурдалцгаая!” гэж удирдлагыг гартаа авна.", color: "red" },
+                    { text: "“Бүгдээрээ гоё санаа гаргая!” гээд уур амьсгалыг хөгжөөж, танилцуулгыг нь хариуцна.", color: "yellow" },
+                    { text: "Бусдынхаа саналыг сонсож, хэнд тусламж хэрэгтэй байна тэр хэсгийг нь хийнэ.", color: "green" },
+                    { text: "Бүх мэдээлэл үнэн зөв эсэхийг шалгаж, тайлангийн алдаа мадгийг хянана.", color: "blue" }
+                ]
+            },
+            {
+                q: "Таны сайн найз хайртай хүнээсээ салаад сэтгэлээр уначихсан ярьж байна. Та яах вэ?",
+                options: [
+                    { text: "“Тэр чамд тохирохгүй хүн байсан, одоо урагшаа хар!” гээд шууд шийдэл хэлнэ.", color: "red" },
+                    { text: "“Хүрээд ир, хоёулаа гадуур гарч зугаацаад бүгдийг мартуулъя!” гэж сэргээнэ.", color: "yellow" },
+                    { text: "Дэргэд нь суугаад яриаг нь таслалгүй тэвчээртэй сонсож, тайвшруулна.", color: "green" },
+                    { text: "Яагаад ийм зүйл болсныг шалтгаан, үр дагавраар нь задлан тайлбарлаж өгнө.", color: "blue" }
+                ]
+            },
+            {
+                q: "Дэлгүүрээс авсан бараа тань гэрт ирэхэд эвдэрхий байвал та ямар арга хэмжээ авах вэ?",
+                options: [
+                    { text: "Шууд буцаж очоод менежертэй нь уулзаж, тэр дор нь солиулж авна.", color: "red" },
+                    { text: "Худалдагчтай нь найрсаг ярилцаж байгаад инээмсэглэж байгаад асуудлаа шийднэ.", color: "yellow" },
+                    { text: "Хэрүүл маргаан хийхээс төвөгшөөгөөд заримдаа зүгээр л өөрөө засаад хэрэглэчихнэ.", color: "green" },
+                    { text: "Баримт, баталгаат хугацааны хуудсаа бэлдэж очоод хуулийн дагуу шаардана.", color: "blue" }
+                ]
+            },
+            {
+                q: "Амралтын өдрүүдээр хөдөө аялалд явахаар төлөвлөж байна. Таны бэлтгэл:",
+                options: [
+                    { text: "“Маргааш өглөө 7 цагт хөдөлнө” гээд гол зүйлсээ аваад л шууд гарна.", color: "red" },
+                    { text: "Хэнтэй явах, ямар тоглоом тоглох, хаана зураг авхуулахыг л их бодно.", color: "yellow" },
+                    { text: "Хүн бүрт тухтай байх эсэхийг бодож, хөнжил гудас, цай хоол бэлдэнэ.", color: "green" },
+                    { text: "Шатахууны зардал, цаг агаарын мэдээ, замын маршрутыг жагсаалт болгож бичнэ.", color: "blue" }
+                ]
+            },
+            {
+                q: "Хэн нэгэн таны хийсэн ажлыг олны өмнө шүүмжилбэл танд ямар мэдрэмж төрөх вэ?",
+                options: [
+                    { text: "Уур хүрч, тэр дор нь өөрийнхөө зөв гэдгийг ширүүнээр хамгаална.", color: "red" },
+                    { text: "Эвгүй байдлаас гарахын тулд хошигнож инээгээд өнгөрөөхийг хичээнэ.", color: "yellow" },
+                    { text: "Гаднаа юу ч хэлэхгүй чимээгүй өнгөрөх ч дотроо их эмзэглэж гомдоно.", color: "green" },
+                    { text: "Шүүмжлэл нь үнэхээр баримттай зөв үү, үгүй юу гэдгийг нарийвчлан тунгаана.", color: "blue" }
+                ]
+            },
+            {
+                q: "Таны утас руу хэн нэгэн маш урт, нуршуу дуут мессеж (voice) явуулчихвал:",
+                options: [
+                    { text: "2x хурд дээр тавьж сонсоод, “Товчхондоо яг юу хэрэгтэй юм бэ?” гэж бичнэ.", color: "red" },
+                    { text: "Сонсож байхдаа сэтгэл хөдлөлөөр хариу реакц өгч, өөрөө ч урт voice явуулна.", color: "yellow" },
+                    { text: "Дуустал нь тэвчээртэй сонсоод, эелдэг, дулаахан хариу бичнэ.", color: "green" },
+                    { text: "Яагаад зүгээр товч текстээр биччихэж болоогүй юм бол гэж бодоод тэмдэглэж авна.", color: "blue" }
+                ]
+            },
+            {
+                q: "Шинэ гар утас эсвэл компьютер худалдаж авахдаа та яаж сонгодог вэ?",
+                options: [
+                    { text: "Хамгийн сүүлийн үеийн, хүчин чадал сайтай загварыг хурдан авчихна.", color: "red" },
+                    { text: "Өнгө үзэмж гоётой, найзууд маань магтсан загварыг сонгоно.", color: "yellow" },
+                    { text: "Өмнө нь барьж байсантайгаа төстэй, хэрэглэхэд амар энгийн загварыг авна.", color: "green" },
+                    { text: "7 хоног YouTube-ээс харьцуулалт үзэж, үзүүлэлт бүрийг нь судалж байж авна.", color: "blue" }
+                ]
+            },
+            {
+                q: "Хурал эсвэл уулзалт дээр хүн бүр өөр өөр зүйл яриад сэдвээсээ хазайгаад эхэлбэл:",
+                options: [
+                    { text: "“За гол асуудалдаа орцгооё, цаг яваад байна!” гэж яриаг тасална.", color: "red" },
+                    { text: "Өөрөө ч тэр сонирхолтой ярианд нь оролцоод инээлдээд суучихна.", color: "yellow" },
+                    { text: "Хэнийг ч эвгүй байдалд оруулахгүйн тулд чимээгүй хүлээгээд сууна.", color: "green" },
+                    { text: "Хурлын хөтөлбөрийн дагуу явах ёстойг сануулж, тэмдэглэл хөтөлнө.", color: "blue" }
+                ]
+            },
+            {
+                q: "Таны төрсөн өдөр болох гэж байна. Та хэрхэн тэмдэглэхийг хүсдэг вэ?",
+                options: [
+                    { text: "Өөрийн хүссэн газарт цөөн хэдэн шилдэг хүмүүстэйгээ чанартай тэмдэглэнэ.", color: "red" },
+                    { text: "Олон найзуудаа дуудаад, дуулж бүжиглэсэн том үдэшлэг хийнэ!", color: "yellow" },
+                    { text: "Гэр бүл, хамгийн дотны 2-3 найзтайгаа гэртээ халуун дулаан сууна.", color: "green" },
+                    { text: "Нэг их сүр бадруулахгүй, тайван орчинд өөртөө дуртай зүйлээ авч өгнө.", color: "blue" }
+                ]
+            },
+            {
+                q: "Ажил дээр гэнэт яаралтай асуудал гарч, бүх төлөвлөгөө өөрчлөгдөх үед:",
+                options: [
+                    { text: "Сандрахгүйгээр шууд ханцуй шамлан орж, асуудлыг дайрч шийднэ.", color: "red" },
+                    { text: "“Зүгээр ээ, нэг арга нь олдоно!” гээд бусдыгаа зоригжуулна.", color: "yellow" },
+                    { text: "Тогтвортой байдал алдагдсанд бага зэрэг хямарч, юу хийхээ асууна.", color: "green" },
+                    { text: "Юунаас болж алдаа гарсныг эхлээд олж тогтоогоод, дараа нь засна.", color: "blue" }
+                ]
+            },
+            {
+                q: "Та хүмүүст бэлэг сонгохдоо ямар зарчим баримталдаг вэ?",
+                options: [
+                    { text: "Үнэ цэнтэй, нэр хүндтэй эсвэл шууд хэрэг болох бодит зүйл өгнө.", color: "red" },
+                    { text: "Хараад л “Хөөх!” гэж дуу алдахаар өвөрмөц, хөгжилтэй бэлэг хайна.", color: "yellow" },
+                    { text: "Тэр хүний дуртай зүйлийг санаж байгаад сэтгэл шингэсэн дулаан бэлэг өгнө.", color: "green" },
+                    { text: "Яг юу хэрэгтэй байгааг нь урьдчилан мэдэж, чанартай, баталгаатайг сонгоно.", color: "blue" }
+                ]
+            },
+            {
+                q: "Цахим сүлжээнд (Facebook/Instagram) та ямархуу хэрэглэгч вэ?",
+                options: [
+                    { text: "Хэрэгтэй мэдээллээ л харна, эсвэл өөрийн амжилт, үзэл бодлоо шууд бичнэ.", color: "red" },
+                    { text: "Story байнга хийж, найзуудынхаа зураг бүрт сэтгэгдэл бичиж идэвхтэй байна.", color: "yellow" },
+                    { text: "Ихэвчлэн хүмүүсийн постыг чимээгүй уншаад зүрх дараад л өнгөрдөг.", color: "green" },
+                    { text: "Хувийн мэдээллээ нууцалдаг, зөвхөн баталгаатай эх сурвалж дагадаг.", color: "blue" }
+                ]
+            },
+            {
+                q: "Хэн нэгэн танд амласан зүйлээ цагтаа хийж өгөхгүй удаагаад байвал:",
+                options: [
+                    { text: "Шууд залгаад “Одоо болтол яагаад болоогүй байна?” гэж хатуу шаардана.", color: "red" },
+                    { text: "“Хөөе найзаа, нөгөө юмаа мартчихав уу?” гээд хошигнон сануулна.", color: "yellow" },
+                    { text: "Шахаж төвөг удахгүй гээд чимээгүй хүлээсээр өөрөө хийчих нь ч бий.", color: "green" },
+                    { text: "Хэзээ яг дуусахыг нь тодорхой цаг минутаар нь асууж баталгаажуулна.", color: "blue" }
+                ]
+            },
+            {
+                q: "Таны мөрөөдлийн амралт ямар байх вэ?",
+                options: [
+                    { text: "Шинэ орнуудаар хурдтай аялж, олон адал явдал, сорилт туулах.", color: "red" },
+                    { text: "Олон хүнтэй амралтын газар очиж, шинэ танилуудтай болж зугаацах.", color: "yellow" },
+                    { text: "Байгальд чимээгүй амарч, ном уншин, гэр бүлтэйгээ тайван байх.", color: "green" },
+                    { text: "Түүх соёлын музей үзэж, бүх зүйл нь төгс зохион байгуулалттай аялах.", color: "blue" }
+                ]
+            },
+            {
+                q: "Хэрэв та ямар нэгэн зүйл дээр өөрөө алдаа гаргаснаа мэдвэл яах вэ?",
+                options: [
+                    { text: "Алдаагаа хурдан засаад, дараагийн ажил руугаа шууд орно.", color: "red" },
+                    { text: "“Өө тийм байна шд!” гээд уучлалт гуйгаад сэтгэлээр унахгүйг хичээнэ.", color: "yellow" },
+                    { text: "Бусдад гай болчихлоо гэж их санаа зовж, уучлалт гуйна.", color: "green" },
+                    { text: "Яагаад ийм алдаа гаргав гэж өөрийгөө удаан хугацаанд шүүмжилж бодно.", color: "blue" }
+                ]
+            },
+            {
+                q: "Орой гэртээ харихад гэр бүлийнхэн тань “Оройн хоолонд юу идэх вэ?” гэж асуувал:",
+                options: [
+                    { text: "“Өнөөдөр цуйван хийе” гээд л шууд шийдээд хэлчихнэ.", color: "red" },
+                    { text: "“Бүгдээрээ гадуур гарч пицца идэх үү? Эсвэл шинэ жор турших уу?” гэнэ.", color: "yellow" },
+                    { text: "“Та нарын идмээр байгааг л хийе, надад ялгаагүй ээ” гэнэ.", color: "green" },
+                    { text: "Хөргөгчинд ямар хүнс байгааг харж байгаад илчлэг, тэжээлийг нь тооцож хэлнэ.", color: "blue" }
+                ]
+            },
+            {
+                q: "Амьдралд таны хувьд хамгийн чухал үнэ цэнэ юу вэ?",
+                options: [
+                    { text: "Амжилт, эрх чөлөө, өөрийнхөөрөө шийдвэр гаргах хүч чадал.", color: "red" },
+                    { text: "Аз жаргал, хүмүүсийн хайр хүндэтгэл, сонирхолтой дурсамжууд.", color: "yellow" },
+                    { text: "Амар амгалан, гэр бүл, найз нөхдийн үнэнч, тогтвортой харилцаа.", color: "green" },
+                    { text: "Үнэнч шударга байдал, өндөр чанар, мэдлэг ба төгс төгөлдөр.", color: "blue" }
+                ]
+            }
+        ];
+
+        // =========================================================================
+        // 3. COLOR & HIPPOCRATES TEMPERAMENT DATA
+        // =========================================================================
+        const colorData = {
+            red: {
+                key: "red",
+                name: "Улаан",
+                upper: "УЛААН",
+                temperament: "Холерик (Choleric)",
+                hex: "#E64848",
+                softBg: "#FAD2D2",
+                textDark: "#7F1D1D",
+                hashtags: ["#ШулуунШударга", "#Холерик", "#Удирдагч", "#ҮрДүндТөвлөрөгч"],
+                dominantTrait: "Хурдтай шийдвэр гаргалт ба зорилгодоо хүрэх тэмүүлэл",
+                role: "Удирдагч, Бизнес эрхлэгч, Төслийн менежер",
+                stressMetaphor: "Жижиг хундага (Хурдан дэлбэрч, хурдан мартдаг)",
+                colleaguesText: "Та бол гал шиг эрч хүчтэй, шийдэмгий хүн. Бусад хүмүүс эргэлзэж байхад та аль хэдийн хөдөлчихсөн байдаг. Таны шулуун шударга зан зарим хүнд хатуу санагддаг ч, хямралын үед хүн бүр таныг түшиж найддаг.",
+                commGuide: "Тантай ярихдаа урт оршил тавилгүй шууд гол санаагаа товч бөгөөд тодорхой хэлэх хэрэгтэй. Танд сонголт болон шийдвэр гаргах эрх чөлөөг өгвөл та хамгийн сайн ажилладаг.",
+                bodyLanguage: [
+                    "Хурдан, шийдэмгий алхаатай, бат бөх гар барьдаг",
+                    "Шууд нүд рүү харж, захирангуй өнгө аясаар хурдан ярьдаг",
+                    "Урагш тэмүүлсэн биеийн байрлалтай, цаг байнга хардаг"
+                ],
+                bestRomance: {
+                    partnerColor: "green",
+                    title: "Ногоон (Флегматик) эсвэл Шар",
+                    desc: "Ногоон өнгийн хүний тайван, халамжтай зан таны хэт хурдан хэмнэлийг тэнцвэржүүлж, гэрт тань амар амгалан авчирна. Тэд таныг байгаагаар тань хүлээн зөвшөөрч, чин сэтгэлээсээ дэмждэг."
+                },
+                challengeRomance: {
+                    partnerColor: "blue",
+                    title: "Цэнхэр (Меланхолик) эсвэл Улаан",
+                    desc: "Цэнхэр хүн бүх зүйлийг удаан судалж, дүрэм журам ярьдаг нь таны тэвчээрийг бардаг. Харин хоёр Улаан нийлбэл 'хэн нь дарга вэ?' гэж маргах гээд байдаг тул буулт хийж сурах хэрэгтэй."
+                }
+            },
+            yellow: {
+                key: "yellow",
+                name: "Шар",
+                upper: "ШАР",
+                temperament: "Сангвиник (Sanguine)",
+                hex: "#F4C430",
+                softBg: "#FDEAA8",
+                textDark: "#78350F",
+                hashtags: ["#ӨөдрөгҮзэлтэн", "#Сангвиник", "#Нийтэч", "#БүтээлчСэтгэгч"],
+                dominantTrait: "Хүмүүст урам зориг өгөх чадвар ба шинэ санаа сэдэх",
+                role: "Маркетинг, Харилцаа холбоо, Урлаг, Борлуулалт",
+                stressMetaphor: "Ердийн аяга (Сэтгэл хөдлөлөө гадагшлуулж гомдоллоод хурдан мартдаг)",
+                colleaguesText: "Та бол баг хамт олны нар! Та орж ирсэн газар бүртээ инээд хөөр, шинэ санаа, дулаан уур амьсгал авчирдаг. Хүмүүс тантай хамт байхдаа уйдах завгүй байдаг ч, заримдаа таныг хэт олон зүйл зэрэг эхлүүлээд дуусгадаггүй гэж хардаг.",
+                commGuide: "Тантай ярихдаа халуун дулаан, нөхөрсөг уур амьсгал бүрдүүлж, шинэ санааг тань сонсож урамшуулах хэрэгтэй. Хуурай тоо баримтаас илүү сонирхолтой түүх, алсын хараа яривал та илүү сайн ойлголцдог.",
+                bodyLanguage: [
+                    "Гар, нүүрний хувирал маш баялаг, байнга инээмсэглэдэг",
+                    "Хүнтэй ойр зогсож, хүрч ярих хандлагатай",
+                    "Дуу хоолой нь цоглог, хурдан бөгөөд сэдвээс сэдэв рүү үсэрдэг"
+                ],
+                bestRomance: {
+                    partnerColor: "green",
+                    title: "Ногоон (Флегматик)",
+                    desc: "Танд ярих зүйл хэзээ ч дуусдаггүй бол Ногоон хүн бол дэлхийн хамгийн сайн сонсогч! Тэд таны галзуу санаануудыг дэмжиж, танд тогтвортой, дулаан түшиг тулгуур болдог."
+                },
+                challengeRomance: {
+                    partnerColor: "blue",
+                    title: "Цэнхэр (Меланхолик)",
+                    desc: "Та гэнэтийн шийдвэр гаргаж зугаацах дуртай бол Цэнхэр хүн бүх зүйлийг төлөвлөж, эрсдэл тооцдог. Тэдний нухацтай занг 'уйтгартай' гэж бүү бодоорой — тэд таныг алдаанаас хамгаалж байгаа хэрэг."
+                }
+            },
+            green: {
+                key: "green",
+                name: "Ногоон",
+                upper: "НОГООН",
+                temperament: "Флегматик (Phlegmatic)",
+                hex: "#4CAF68",
+                softBg: "#CBEFD4",
+                textDark: "#14532D",
+                hashtags: ["#ТайванНайдвартай", "#Флегматик", "#СайнСонсогч", "#ЭвНэгдэл"],
+                dominantTrait: "Хүн чанар, тэвчээр ба баг хамт олны эв найрамдал",
+                role: "Хүний нөөц, Багш, Эмч, Харилцагчийн үйлчилгээ",
+                stressMetaphor: "Том модон торх (Удаан тэвчиж дотроо хураасаар нэг өдөр хальдаг)",
+                colleaguesText: "Та бол хүн бүрийн итгэж найддаг амар амгалангийн арал. Та бусдыг шүүмжлэлгүй сонсож, хүн бүрт туслахыг хичээдэг. Хамт олон таныг маш зөөлөн сэтгэлтэй гэж үнэлдэг ч, заримдаа өөрийнхөө төлөө 'Үгүй' гэж хэлж сураасай гэж хүсдэг.",
+                commGuide: "Тантай эелдэг, тайван өнгө аясаар ярилцаж, гэнэтийн өөрчлөлт тулгалгүй урьдчилан сануулах хэрэгтэй. Алхам алхмаар тодорхой чиглэл өгвөл та хамгийн найдвартай гүйцэтгэгч байж чаддаг.",
+                bodyLanguage: [
+                    "Тайван, зөөлөн хөдөлгөөнтэй, тухлан налж суудаг",
+                    "Намуухан, дулаахан дуу хоолойтой, удаан ярьдаг",
+                    "Анхаарал татахыг хүсдэггүй, даруухан хувцасладаг"
+                ],
+                bestRomance: {
+                    partnerColor: "yellow",
+                    title: "Шар (Сангвиник) эсвэл Цэнхэр",
+                    desc: "Шар хүн таны амьдралд баяр баясгалан, шинэ өнгө нэмдэг бол Цэнхэр хүн тантай адил тайван, үнэнч, гэр бүлсэг орчныг бүрдүүлдэг. Аль аль нь таны зөөлөн сэтгэлийг гүнээ хүндэлнэ."
+                },
+                challengeRomance: {
+                    partnerColor: "red",
+                    title: "Улаан (Холерик)",
+                    desc: "Улаан хүн хэт хурдан, ширүүн өнгө аясаар ярих үед та өөрийгөө буруутгаж дотогшоо хаагддаг. Тэд уурласандаа биш, зүгээр л хурдтай байгаагаа илэрхийлж байгааг ойлгож, өөрийн бодлоо зоригтой хэлээрэй."
+                }
+            },
+            blue: {
+                key: "blue",
+                name: "Цэнхэр",
+                upper: "ЦЭНХЭР",
+                temperament: "Меланхолик (Melancholic)",
+                hex: "#4A89DC",
+                softBg: "#CBE0FA",
+                textDark: "#1E3A8A",
+                hashtags: ["#Нарийвчлал", "#Меланхолик", "#ЛогикСэтгэлгээ", "#ТөгсЧанартай"],
+                dominantTrait: "Дүн шинжилгээ хийх чадвар ба өндөр чанар, нарийвчлал",
+                role: "Инженер, Санхүүч, Программист, Судлаач, Хуульч",
+                stressMetaphor: "Дусал гоожих цорго (Алдаа бүрийг чимээгүй өөнтөглөн шүүмжилдэг)",
+                colleaguesText: "Та бол багийн оюун ухаан, чанарын баталгаа! Бусдын анзаараагүй жижиг алдааг та л олж хардаг. Хүмүүс таныг ухаалаг, зарчимч гэж хүндэлдэг ч, заримдаа хэт нухацтай эсвэл хөндий хүйтэн санагдах үе бий.",
+                commGuide: "Тантай ярихдаа сэтгэл хөдлөлөөс илүү бодит баримт, тооцоолол, логик үндэслэлтэй хандах хэрэгтэй. Танд дүн шинжилгээ хийж, бодох хугацаа өгвөл та хамгийн оновчтой шийдлийг гаргадаг.",
+                bodyLanguage: [
+                    "Биеийн хөдөлгөөн багатай, нүүрний хувирал тогтвортой",
+                    "Бусдаас тодорхой физик зай барьж, гараа эсвэл хөлөө зөрүүлдэг",
+                    "Намуухан, цэгцтэй, илүүц үггүй ярьдаг"
+                ],
+                bestRomance: {
+                    partnerColor: "green",
+                    title: "Ногоон (Флегматик)",
+                    desc: "Ногоон хүн таны хувийн орон зайг хүндэлж, гэнэтийн шоу цэнгээнээр таныг ядраахгүй. Та хоёр хоёулаа үнэнч, тогтвортой, гүнзгий харилцааг эрхэмлэдэг тул маш бат бөх хос болдог."
+                },
+                challengeRomance: {
+                    partnerColor: "yellow",
+                    title: "Шар (Сангвиник)",
+                    desc: "Шар хүн цаг баримтлахгүй, төлөвлөгөөгүй ажиллах нь таныг стресстүүлдэг. Харин та тэдний алдааг хэт шүүмжлэхээ багасгаж, хамтдаа хөгжилдөж сурвал бие биенээ төгс нөхөж чадна."
+                }
+            }
+        };
+
+        // Hybrid Temperament Synthesis Descriptions
+        const hybridTemperamentText = {
+            "red-yellow": "Холерик + Сангвиник: Хамгийн эрч хүчтэй, гадагшаа чиглэсэн хослол. Та шийдвэр гаргахдаа хурдан төдийгүй хүмүүсийг урамшуулж, өөртөө татах онцгой авьяастай.",
+            "red-blue": "Холерик + Меланхолик: Маш хүчирхэг, зорилготой хослол. Та өндөр үр дүнд хүрэхийг хүсэхийн зэрэгцээ бүх зүйл чанартай, алдаагүй байхыг шаарддаг.",
+            "red-green": "Холерик + Флегматик: Шийдэмгий боловч тэвчээртэй хослол. Та зорилгодоо хүрэхийн төлөө тэмцдэг ч бусдын санаа бодлыг сонсож, эв зүйгээр шийдэж чаддаг.",
+            "yellow-red": "Сангвиник + Холерик: Бүтээлч, цоглог бөгөөд зоригтой хослол. Та шинэ санаа гаргаад зогсохгүй түүнийгээ бодит ажил болгох эрч хүчтэй.",
+            "yellow-green": "Сангвиник + Флегматик: Хамгийн дулаахан, хүнлэг хослол. Та хүмүүстэй амархан нөхөрлөж, хүн бүрт таатай, аюулгүй уур амьсгал бүрдүүлдэг.",
+            "yellow-blue": "Сангвиник + Меланхолик: Уран бүтээлч сэтгэлгээ ба нарийн мэдрэмжийн хослол. Та нэг талаас нийтэч, сэтгэл хөдлөлтэй ч нөгөө талаас гүнзгий боддог.",
+            "green-yellow": "Флегматик + Сангвиник: Найрсаг, эерэг бөгөөд сайн сонсогч. Та хүмүүст туслах дуртай, хөгжилтэй яриа өрнүүлж чаддаг дулаан хүн.",
+            "green-blue": "Флегматик + Меланхолик: Хамгийн тайван, нямбай, найдвартай хослол. Та яаруу шийдвэр гаргадаггүй, аливаа зүйлийг ул суурьтай, чанартай хийдэг.",
+            "green-red": "Флегматик + Холерик: Гаднаа тайван харагддаг ч дотроо маш тууштай, хүчтэй хүн. Шаардлагатай үед удирдлагыг гартаа авч чаддаг.",
+            "blue-green": "Меланхолик + Флегматик: Ухаалаг, тайван, өндөр ёс суртахуунтай хослол. Та аливааг гүнзгий судалж, бусдад төвөг удалгүй төгс гүйцэтгэдэг.",
+            "blue-red": "Меланхолик + Холерик: Стратегич сэтгэлгээтэй манлайлагч. Та нарийн тооцоолол, логик дээр үндэслэн зоригтой шийдвэр гаргадаг.",
+            "blue-yellow": "Меланхолик + Сангвиник: Оюунлаг бөгөөд бүтээлч хослол. Та нарийн судалгаа хийж чаддаг ч санаагаа хүмүүст сонирхолтой хэлбэрээр ойлгуулж чаддаг."
+        };
+
+        // =========================================================================
+        // 4. STATE MANAGEMENT & SHUFFLED OPTIONS
+        // =========================================================================
+        let currentIdx = 0;
+        let selectedAnswers = new Array(scenarioQuestions.length).fill(null);
+        // Pre-shuffle option orders per question deterministically so colors aren't always A=Red, B=Yellow
+        const optionOrders = scenarioQuestions.map((_, i) => {
+            const arr = [0, 1, 2, 3];
+            for (let j = arr.length - 1; j > 0; j--) {
+                const k = (i * 7 + j * 3) % (j + 1);
+                [arr[j], arr[k]] = [arr[k], arr[j]];
+            }
+            return arr;
+        });
+
+        let simColorA = 'red';
+        let simColorB = 'green';
+        let simMode = 'romance'; // 'romance' or 'work'
+
+        // =========================================================================
+        // 5. NAVIGATION & TOAST
+        // =========================================================================
+        function switchMainView(viewName) {
+            ['quiz', 'guide', 'simulator'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                const btn = document.getElementById(`nav-${v}`);
+                btn.classList.remove('bg-[#1A1A1A]', 'text-white');
+                btn.classList.add('bg-[#FFFDF9]', 'text-[#1A1A1A]');
+            });
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${viewName}`);
+            activeBtn.classList.remove('bg-[#FFFDF9]', 'text-[#1A1A1A]');
+            activeBtn.classList.add('bg-[#1A1A1A]', 'text-white');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-msg');
+            document.getElementById('toast-text').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2800);
+        }
+
+        // =========================================================================
+        // 6. QUIZ ENGINE
+        // =========================================================================
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+            currentIdx = 0;
+            renderScenarioQuestion();
+        }
+
+        function restartQuiz() {
+            selectedAnswers = new Array(scenarioQuestions.length).fill(null);
+            currentIdx = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+            renderScenarioQuestion();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderScenarioQuestion() {
+            const item = scenarioQuestions[currentIdx];
+            const total = scenarioQuestions.length;
+
+            document.getElementById('q-current').textContent = currentIdx + 1;
+            const pct = Math.round(((currentIdx + 1) / total) * 100);
+            document.getElementById('q-percent').textContent = `${pct}%`;
+            document.getElementById('q-text').textContent = item.q;
+
+            // Render 20 Pixel Progress Blocks
+            const bar = document.getElementById('pixel-progress-blocks');
+            bar.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const block = document.createElement('div');
+                block.className = `h-3 border border-[#1A1A1A] ${
+                    i <= currentIdx ? 'bg-[#E64848]' : 'bg-[#FFFDF9]'
+                }`;
+                bar.appendChild(block);
+            }
+
+            // Render 4 Options in shuffled order
+            const optsEl = document.getElementById('q-options');
+            optsEl.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            const order = optionOrders[currentIdx];
+
+            order.forEach((origIdx, displayIdx) => {
+                const opt = item.options[origIdx];
+                const isSelected = selectedAnswers[currentIdx] === opt.color;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => chooseAnswer(opt.color);
+                btn.className = `pixel-btn w-full text-left p-3.5 sm:p-4 flex items-start gap-3 ${
+                    isSelected
+                        ? 'bg-[#1A1A1A] text-white'
+                        : 'bg-[#FFFDF9] hover:bg-[#F5EFE6] text-[#1A1A1A]'
+                }`;
+
+                btn.innerHTML = `
+                    <span class="font-pixel-num text-xs w-7 h-7 flex items-center justify-center border-2 shrink-0 mt-0.5 ${
+                        isSelected
+                            ? 'bg-[#F4C430] text-[#1A1A1A] border-[#F4C430]'
+                            : 'bg-[#F5EFE6] text-[#1A1A1A] border-[#1A1A1A]'
+                    }">${letters[displayIdx]}</span>
+                    <span class="text-sm sm:text-base font-bold leading-snug">${opt.text}</span>
+                `;
+                optsEl.appendChild(btn);
+            });
+
+            document.getElementById('btn-prev').disabled = currentIdx === 0;
+        }
+
+        function chooseAnswer(color) {
+            selectedAnswers[currentIdx] = color;
+            renderScenarioQuestion();
+
+            setTimeout(() => {
+                if (currentIdx < scenarioQuestions.length - 1) {
+                    currentIdx++;
+                    renderScenarioQuestion();
+                } else {
+                    renderFinalResultPoster();
+                }
+            }, 180);
+        }
+
+        function goPrevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderScenarioQuestion();
+            }
+        }
+
+        // =========================================================================
+        // 7. RESULT CALCULATION & INFOGRAPHIC POSTER RENDERING
+        // =========================================================================
+        function renderFinalResultPoster() {
+            const counts = { red: 0, yellow: 0, green: 0, blue: 0 };
+            selectedAnswers.forEach(c => {
+                if (c && counts.hasOwnProperty(c)) counts[c]++;
+            });
+
+            const total = scenarioQuestions.length; // 20 questions -> each question = 5%
+            const ranked = Object.entries(counts)
+                .map(([key, count]) => ({
+                    key,
+                    count,
+                    pct: Math.round((count / total) * 100),
+                    info: colorData[key]
+                }))
+                .sort((a, b) => b.count - a.count);
+
+            const primary = ranked[0];
+            const secondary = ranked[1];
+            const isPure = primary.pct >= 55 && secondary.pct <= 20;
+
+            // Set Poster Background Color to soft tint of primary color (just like CakeResume poster!)
+            const poster = document.getElementById('result-poster');
+            poster.style.backgroundColor = primary.info.softBg;
+
+            // Main Title
+            const mainTitle = isPure
+                ? `ЦЭВЭР ${primary.info.upper} ТӨРӨЛ`
+                : `${primary.info.upper} - ${secondary.info.upper}`;
+            document.getElementById('res-main-title').textContent = mainTitle;
+
+            // Archetype subtitle
+            const archetypeMap = {
+                "red-yellow": "Хурдлагч Манлайлагч",
+                "red-blue": "Стратегич Удирдагч",
+                "red-green": "Тууштай Зохион Байгуулагч",
+                "yellow-red": "Эрч Хүчтэй Шинэчлэгч",
+                "yellow-green": "Дулаан Харилцааны Од",
+                "yellow-blue": "Бүтээлч Сэтгэгч",
+                "green-yellow": "Нөхөрсөг Дэмжигч",
+                "green-blue": "Найдвартай Түшиг Тулгуур",
+                "green-red": "Тайван Хүчирхэг Тэмцэгч",
+                "blue-green": "Ухаалаг Шинжээч",
+                "blue-red": "Төгс Гүйцэтгэгч",
+                "blue-yellow": "Оюунлаг Зохион Бүтээгч"
+            };
+            const pairKey = `${primary.key}-${secondary.key}`;
+            document.getElementById('res-archetype-name').textContent = isPure
+                ? `${primary.info.name} • ${primary.info.temperament}`
+                : `${archetypeMap[pairKey] || primary.info.name} (${primary.info.temperament.split(' ')[0]} + ${secondary.info.temperament.split(' ')[0]})`;
+
+            // Hashtags
+            const tags = [
+                ...primary.info.hashtags.slice(0, 2),
+                `#${secondary.info.temperament.split(' ')[0]}`,
+                `#${primary.info.name}${primary.pct}%`
+            ];
+            document.getElementById('res-hashtags').innerHTML = tags.map(t =>
+                `<span class="bg-[#1A1A1A] text-white text-[11px] font-extrabold px-2.5 py-1">${t}</span>`
+            ).join('');
+
+            // Dominant trait highlight
+            document.getElementById('res-dominant-summary').textContent =
+                `${primary.info.name} (${primary.pct}%) — ${primary.info.dominantTrait}`;
+
+            // Avatar Box
+            document.getElementById('res-temperament-badge').textContent = primary.info.temperament.split(' ')[0].toUpperCase();
+            document.getElementById('res-avatar-container').innerHTML = getPixelAvatarSVG(primary.key, 125);
+            document.getElementById('res-avatar-caption').textContent =
+                `${primary.info.name} ${primary.pct}% • ${secondary.info.name} ${secondary.pct}%`;
+
+            // Stacked Bar + 4 Color Cards
+            document.getElementById('res-stacked-bar').innerHTML = ranked.map(item =>
+                item.pct > 0
+                    ? `<div style="width: ${item.pct}%; background-color: ${item.info.hex};" class="h-full border-r-2 last:border-r-0 border-[#1A1A1A] flex items-center justify-center text-[10px] font-pixel-num text-white">${item.pct >= 15 ? item.pct + '%' : ''}</div>`
+                    : ''
+            ).join('');
+
+            document.getElementById('res-color-grid').innerHTML = ranked.map((item, idx) => `
+                <div class="border-[2.5px] border-[#1A1A1A] p-2.5 ${idx === 0 ? 'bg-[#FFF9D6]' : 'bg-[#FFFDF9]'}">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-black text-xs flex items-center gap-1.5">
+                            <span class="w-3 h-3 inline-block border border-[#1A1A1A]" style="background:${item.info.hex}"></span>
+                            ${item.info.name}
+                        </span>
+                        <span class="font-pixel-num text-xs font-bold">${item.pct}%</span>
+                    </div>
+                    <div class="text-[11px] font-bold text-stone-600">${item.info.temperament.split(' ')[0]}</div>
+                </div>
+            `).join('');
+
+            // 6-Axis Pixel Radar Chart
+            document.getElementById('res-radar-container').innerHTML = buildRadarSVG(counts);
+
+            // Colleagues Card (Colored with primary hex like CakeResume red box)
+            const colCard = document.getElementById('res-colleagues-card');
+            colCard.style.backgroundColor = primary.info.hex;
+            colCard.style.color = primary.key === 'yellow' ? '#1A1A1A' : '#FFFFFF';
+            document.getElementById('res-colleagues-text').textContent = primary.info.colleaguesText;
+
+            // Hippocrates Temperament Blend
+            document.getElementById('res-temp-combo-title').textContent =
+                `${primary.info.temperament.split(' ')[0]} (${primary.pct}%) + ${secondary.info.temperament.split(' ')[0]} (${secondary.pct}%)`;
+            document.getElementById('res-temp-combo-desc').textContent =
+                hybridTemperamentText[pairKey] || primary.info.colleaguesText;
+
+            // Communication Guide
+            document.getElementById('res-comm-guide').textContent = primary.info.commGuide;
+
+            // 3 Metric Boxes
+            document.getElementById('res-role').textContent = primary.info.role;
+            document.getElementById('res-index-num').textContent = `${primary.pct}%`;
+            document.getElementById('res-index-num').style.color = primary.info.hex === '#F4C430' ? '#B45309' : primary.info.hex;
+            document.getElementById('res-stress-metaphor').textContent = primary.info.stressMetaphor;
+
+            // Romantic Compatibility Cards
+            const bestPartner = colorData[primary.info.bestRomance.partnerColor];
+            document.getElementById('res-best-match-header').innerHTML = `
+                <div class="w-16 h-16 border-2 border-[#1A1A1A] bg-[#F5EFE6] p-1 shrink-0">
+                    ${getPixelAvatarSVG(bestPartner.key, 52)}
+                </div>
+                <div>
+                    <div class="text-[11px] font-extrabold text-stone-500 uppercase">Төгс зохицох өнгө</div>
+                    <div class="font-black text-base text-[#1A1A1A]">${primary.info.bestRomance.title}</div>
+                </div>
+            `;
+            document.getElementById('res-best-match-desc').textContent = primary.info.bestRomance.desc;
+
+            const chalPartner = colorData[primary.info.challengeRomance.partnerColor];
+            document.getElementById('res-challenge-match-header').innerHTML = `
+                <div class="w-16 h-16 border-2 border-[#1A1A1A] bg-[#F5EFE6] p-1 shrink-0">
+                    ${getPixelAvatarSVG(chalPartner.key, 52)}
+                </div>
+                <div>
+                    <div class="text-[11px] font-extrabold text-stone-500 uppercase">Ойлголцол шаардах өнгө</div>
+                    <div class="font-black text-base text-[#1A1A1A]">${primary.info.challengeRomance.title}</div>
+                </div>
+            `;
+            document.getElementById('res-challenge-match-desc').textContent = primary.info.challengeRomance.desc;
+
+            // Sync simulator with user's primary color
+            simColorA = primary.key;
+            simColorB = bestPartner.key;
+            renderSimulator();
+
+            // Show Result View
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Dynamic 6-Axis Hexagon Radar Chart (Matching CakeResume infographic style)
+        function buildRadarSVG(counts) {
+            // Normalize 6 axes from the 4 color counts (scale 0.25 to 1.0)
+            const r = counts.red / 20;
+            const y = counts.yellow / 20;
+            const g = counts.green / 20;
+            const b = counts.blue / 20;
+
+            const axes = [
+                { label: "Шийдэмгий", val: Math.min(1, 0.25 + r * 1.4 + y * 0.2) },      // Top (90 deg)
+                { label: "Бүтээлч", val: Math.min(1, 0.25 + y * 1.4 + r * 0.2) },        // Top-Right (30 deg)
+                { label: "Нөлөөлөл", val: Math.min(1, 0.25 + y * 0.9 + r * 0.8) },       // Bottom-Right (-30 deg)
+                { label: "Багийн ажил", val: Math.min(1, 0.25 + g * 1.3 + y * 0.3) },    // Bottom (-90 deg)
+                { label: "Тогтвортой", val: Math.min(1, 0.25 + g * 1.1 + b * 0.5) },     // Bottom-Left (-150 deg)
+                { label: "Нарийвчлал", val: Math.min(1, 0.25 + b * 1.5 + g * 0.2) }      // Top-Left (150 deg)
+            ];
+
+            const cx = 140, cy = 115, maxR = 68;
+            const angles = [-90, -30, 30, 90, 150, 210].map(deg => (deg * Math.PI) / 180);
+
+            // Concentric grid webs (3 levels)
+            const webs = [0.33, 0.66, 1.0].map(level => {
+                const pts = angles.map(ang => `${cx + maxR * level * Math.cos(ang)},${cy + maxR * level * Math.sin(ang)}`).join(' ');
+                return `<polygon points="${pts}" fill="none" stroke="#1A1A1A" stroke-width="1.2" opacity="0.35"/>`;
+            }).join('');
+
+            // Axis lines
+            const lines = angles.map(ang =>
+                `<line x1="${cx}" y1="${cy}" x2="${cx + maxR * Math.cos(ang)}" y2="${cy + maxR * Math.sin(ang)}" stroke="#1A1A1A" stroke-width="1.2" opacity="0.4"/>`
+            ).join('');
+
+            // User data polygon
+            const dataPts = axes.map((ax, i) => {
+                const dist = maxR * ax.val;
+                return `${cx + dist * Math.cos(angles[i])},${cy + dist * Math.sin(angles[i])}`;
+            }).join(' ');
+
+            // Labels
+            const labels = axes.map((ax, i) => {
+                const lx = cx + (maxR + 22) * Math.cos(angles[i]);
+                const ly = cy + (maxR + 16) * Math.sin(angles[i]) + 4;
+                return `<text x="${lx}" y="${ly}" text-anchor="middle" font-size="10" font-weight="800" fill="#1A1A1A">${ax.label}</text>`;
+            }).join('');
+
+            return `
+            <svg viewBox="0 0 280 230" class="w-full max-w-[270px] h-auto">
+                ${webs}
+                ${lines}
+                <polygon points="${dataPts}" fill="#E64848" fill-opacity="0.55" stroke="#1A1A1A" stroke-width="2.5"/>
+                ${labels}
+            </svg>`;
+        }
+
+        // Copy Result Text to Clipboard using execCommand fallback
+        function copyResultSummary() {
+            const title = document.getElementById('res-main-title').textContent;
+            const arch = document.getElementById('res-archetype-name').textContent;
+            const caption = document.getElementById('res-avatar-caption').textContent;
+            const text = `Миний DISA & Темперамент үр дүн:\n★ ${title} (${arch})\n★ Хувь: ${caption}\n"Тэнэгүүдээр хүрээлэгдсэн нь" пиксел тест!`;
+
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast('Үр дүн амжилттай хуулагдлаа!');
+            } catch (e) {
+                showToast('Хуулах боломжгүй байна.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        // =========================================================================
+        // 8. 4 COLORS & TEMPERAMENTS GUIDE RENDERER
+        // =========================================================================
+        function renderGuideTab(colorKey) {
+            const c = colorData[colorKey];
+            ['red', 'yellow', 'green', 'blue'].forEach(k => {
+                const btn = document.getElementById(`gtab-${k}`);
+                if (k === colorKey) {
+                    btn.style.backgroundColor = colorData[k].hex;
+                    btn.style.color = k === 'yellow' ? '#1A1A1A' : '#FFFFFF';
+                } else {
+                    btn.style.backgroundColor = '#FFFDF9';
+                    btn.style.color = '#1A1A1A';
+                }
+            });
+
+            const card = document.getElementById('guide-content-card');
+            card.innerHTML = `
+                <div style="background-color: ${c.softBg};" class="p-5 sm:p-7 border-b-[3px] border-[#1A1A1A] flex flex-col sm:flex-row items-center gap-5">
+                    <div class="w-24 h-24 bg-[#FFFDF9] border-[3px] border-[#1A1A1A] shadow-[3px_3px_0px_#1A1A1A] p-2 shrink-0">
+                        ${getPixelAvatarSVG(c.key, 76)}
+                    </div>
+                    <div class="text-center sm:text-left">
+                        <span class="bg-[#1A1A1A] text-white text-xs font-extrabold px-2.5 py-1">${c.temperament}</span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-[#1A1A1A] mt-2">${c.name} зан төлөв</h3>
+                        <p class="text-sm font-bold text-stone-800 mt-1">${c.dominantTrait}</p>
+                    </div>
+                </div>
+
+                <div class="p-5 sm:p-7 grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-[#F5EFE6] border-[2.5px] border-[#1A1A1A] p-4">
+                        <div class="font-black text-sm mb-2">👀 Биеийн хэлэмж ба Хэрхэн таних вэ?</div>
+                        <ul class="space-y-2 text-xs sm:text-sm font-medium text-stone-800">
+                            ${c.bodyLanguage.map(b => `<li>▪ ${b}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-[#F5EFE6] border-[2.5px] border-[#1A1A1A] p-4">
+                        <div class="font-black text-sm mb-2">🔥 Стресст орсон үеийн үйлдэл</div>
+                        <p class="text-xs sm:text-sm font-bold text-[#1A1A1A] mb-2">${c.stressMetaphor}</p>
+                        <p class="text-xs sm:text-sm text-stone-700 leading-relaxed">${c.commGuide}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 9. COUPLE & WORK COMPATIBILITY SIMULATOR
+        // =========================================================================
+        const pairInsights = {
+            "red-red": {
+                score: "70% • ГАЛ ДЭЭР ТОС ЭСВЭЛ ХҮЧИРХЭГ ХОС",
+                romance: "Та хоёр хоёулаа хүсэл тэмүүлэлтэй, бие даасан хүмүүс. Хамтдаа өндөр амжилтад хүрэх ч гэртээ хэн нь шийдвэр гаргах вэ гэж маргалдах гээд байдаг. Ажил ба гэр бүлийн удирдлагыг хувааж авбал гайхалтай хос болно.",
+                work: "Хоёр удирдагч нэг дор! Хэн нь жолоог атгахыг эхнээс нь тодорхой болгохгүй бол хурдтай боловч ширүүн өрсөлдөөн үүснэ.",
+                tip: "Бие биенийхээ бардам занг хүндэлж, заримдаа зүгээр л буулт хийж сураарай."
+            },
+            "red-yellow": {
+                score: "88% • ЭРЧ ХҮЧТЭЙ, АДАЛ ЯВДАЛТАЙ ХОС",
+                romance: "Уйдах завгүй, хамгийн хөгжилтэй бөгөөд зоримог хос! Улаан нь хамгаалж, чиглүүлдэг бол Шар нь харилцаанд баяр баясгалан, хайр энхрийлэл авчирдаг.",
+                work: "Байгалийн жамаар нийцэгчид. Шар нь шинэ санаа гаргаж, Улаан нь түүнийг хурдан хэрэгжүүлнэ.",
+                tip: "Улаан нь Шар хүний яриаг таслалгүй сонсож, Шар нь амласан цагтаа багтаж сурах."
+            },
+            "red-green": {
+                score: "92% • БИЕ БИЕНЭЭ ТӨГС НӨХӨГЧ ХОС",
+                romance: "Эсрэг тэсрэг боловч хамгийн бат бөх хослолын нэг! Улаан хүний шийдэмгий байдал Ногоон хүнд аюулгүй мэдрэмж өгч, Ногоон хүний халамж Улаан хүнийг зөөлрүүлдэг.",
+                work: "Хурдны зөрүү ихтэй тул Улаан нь дуугаа зөөлрүүлж, Ногоон хүнд бодох хугацаа өгөх шаардлагатай.",
+                tip: "Улаан нь шахаж шаардахаа багасгаж, Ногоон нь гомдлоо дотроо хадгалалгүй шууд хэлж сурах."
+            },
+            "red-blue": {
+                score: "75% • ОЮУНЛАГ БА ЗОРИЛГОТОЙ ХОС",
+                romance: "Хоёулаа сэтгэл хөдлөлөөс илүү бодит байдлыг эрхэмлэдэг. Гэхдээ Улаан нь 'хурдан хийе' гэдэг бол Цэнхэр нь 'нягталж бодъё' гэдэг тул заримдаа зөрчилдөнө.",
+                work: "Хурд ба чанарын тэнцвэр. Улаан нь том зургийг харж, Цэнхэр нь алдаа эрсдэлээс сэргийлнэ.",
+                tip: "Улаан нь баримт нотолгоог хүндэлж, Цэнхэр нь жижиг алдаа бүрийг шүүмжлэхээ болих."
+            },
+            "yellow-yellow": {
+                score: "82% • БАЯР БАЯСГАЛАН, ИНЭЭД ХӨӨР",
+                romance: "Хамгийн дуу шуугиантай, найз нөхөд олонтой, романтик хос! Гэвч хоёулаа санхүү, төлөвлөгөө тал дээр хайнга байх эрсдэлтэй.",
+                work: "Санаа хэзээ ч дуусахгүй ч ажлыг эцэст нь хүргэж дуусгах хүн дутагдана.",
+                tip: "Чухал төлөвлөгөө, санхүүгээ заавал бичиж тэмдэглэж хэвших."
+            },
+            "yellow-green": {
+                score: "94% • ХАМГИЙН ДУЛААХАН, ЭНХРИЙ ХОС",
+                romance: "Хоёулаа хүнийг хайрлаж, халамжлах сэтгэлтэй тул маш зөөлөн, хэрүүл маргаангүй харилцаа үүснэ. Шар нь ярьж, Ногоон нь дуртайяа сонсдог.",
+                work: "Найрсаг, эв найртай баг. Харин шийдэмгий алхам хийхдээ бага зэрэг удааширч болно.",
+                tip: "Шар нь Ногоон хүний үзэл бодлыг асууж, тэдэнд ярих боломж олгох."
+            },
+            "yellow-blue": {
+                score: "65% • ЭСРЭГ ТЭСРЭГ СОРИЛТТОЙ ХОС",
+                romance: "Нэг нь гэнэтийн баяр хөөр, нөгөө нь нарийн төлөвлөгөө. Эхэндээ бие биенийхээ өөр байдалд татагддаг ч яваандаа 'хэт хөнгөн' ба 'хэт нухацтай' гэж муудалцах гээд байдаг.",
+                work: "Хамгийн их үл ойлголцол гардаг хослол боловч бие биенээ ойлгож чадвал төгс бүтээл гаргана.",
+                tip: "Шар нь цаг баримталж, Цэнхэр нь хэт шүүмжлэхгүйгээр хамтдаа инээж сурах."
+            },
+            "green-green": {
+                score: "89% • АМАР АМГАЛАНГИЙН ДИВААЖИН",
+                romance: "Хэзээ ч бие бие рүүгээ хашхирч маргахгүй, маш үнэнч, тайван гэр бүл. Харин чухал шийдвэр гаргах үед хэн нь ч түрүүлж хөдлөхгүй удах талтай.",
+                work: "Зөрчилгүй, тогтвортой хамтын ажиллагаа. Тодорхой хугацаа, үүрэг хуваарилалт хэрэгтэй.",
+                tip: "Асуудлаас зугтахгүйгээр илэн далангүй ярилцаж, зоригтой шийдвэр гаргах."
+            },
+            "green-blue": {
+                score: "91% • ИТГЭЛЦЭЛ БА ТОГТВОРТОЙ ХОС",
+                romance: "Хоёулаа чимээгүй, үнэнч, гэр бүлсэг хүмүүс. Бие биенийхээ хувийн орон зайг хүндэлж, тайван бөгөөд бат бөх амьдралыг бүтээдэг.",
+                work: "Байгалийн жамаар нийцэгчид. Цэнхэр нь төлөвлөж, Ногоон нь түүнийг үнэнчээр гүйцэтгэнэ.",
+                tip: "Цэнхэр нь сэтгэл хөдлөлөө илүү илэрхийлж, Ногоон нь өөрийн хэрэгцээгээ хэлж байх."
+            },
+            "blue-blue": {
+                score: "85% • ОЮУНЛАГ БА ТӨГС ЗОХИОН БАЙГУУЛАЛТ",
+                romance: "Бүх зүйл цэгцтэй, ойлгомжтой, өндөр соёлтой харилцаа. Харин хэт их дүн шинжилгээ хийж, жижиг зүйл дээр бие биенээ шүүмжлэхээс сэргийлэх хэрэгтэй.",
+                work: "Дээд зэргийн чанар, алдаагүй гүйцэтгэл. Шийдвэр гаргах хугацаагаа хязгаарлах хэрэгтэй.",
+                tip: "Төгс төгөлдрийг хайхаа түр зогсоож, зүгээр л сэтгэлээрээ бие биенээ эрхлүүлэх."
+            }
+        };
+
+        function setSimMode(mode) {
+            simMode = mode;
+            const rBtn = document.getElementById('mode-romance');
+            const wBtn = document.getElementById('mode-work');
+            if (mode === 'romance') {
+                rBtn.className = 'px-3 py-1 text-xs font-black bg-[#E64848] text-white';
+                wBtn.className = 'px-3 py-1 text-xs font-black text-[#1A1A1A]';
+            } else {
+                wBtn.className = 'px-3 py-1 text-xs font-black bg-[#1A1A1A] text-[#F4C430]';
+                rBtn.className = 'px-3 py-1 text-xs font-black text-[#1A1A1A]';
+            }
+            renderSimulator();
+        }
+
+        function setSimPerson(person, color) {
+            if (person === 'a') simColorA = color;
+            if (person === 'b') simColorB = color;
+            renderSimulator();
+        }
+
+        function swapSimPeople() {
+            const tmp = simColorA;
+            simColorA = simColorB;
+            simColorB = tmp;
+            renderSimulator();
+        }
+
+        function renderSimulator() {
+            document.querySelectorAll('.sim-a').forEach(btn => {
+                const c = btn.dataset.c;
+                if (c === simColorA) {
+                    btn.style.backgroundColor = colorData[c].hex;
+                    btn.style.color = c === 'yellow' ? '#1A1A1A' : '#FFFFFF';
+                } else {
+                    btn.style.backgroundColor = '#FFFDF9';
+                    btn.style.color = '#1A1A1A';
+                }
+            });
+
+            document.querySelectorAll('.sim-b').forEach(btn => {
+                const c = btn.dataset.c;
+                if (c === simColorB) {
+                    btn.style.backgroundColor = colorData[c].hex;
+                    btn.style.color = c === 'yellow' ? '#1A1A1A' : '#FFFFFF';
+                } else {
+                    btn.style.backgroundColor = '#FFFDF9';
+                    btn.style.color = '#1A1A1A';
+                }
+            });
+
+            // Lookup symmetric pair key
+            const order = ['red', 'yellow', 'green', 'blue'];
+            const sortedPair = [simColorA, simColorB].sort((x, y) => order.indexOf(x) - order.indexOf(y));
+            const key = `${sortedPair[0]}-${sortedPair[1]}`;
+            const data = pairInsights[key];
+
+            const pA = colorData[simColorA];
+            const pB = colorData[simColorB];
+
+            document.getElementById('sim-result-box').innerHTML = `
+                <div class="bg-[#1A1A1A] text-white px-5 py-3 flex flex-wrap items-center justify-between gap-2">
+                    <span class="font-black text-xs sm:text-sm">${pA.upper} + ${pB.upper}</span>
+                    <span class="bg-[#F4C430] text-[#1A1A1A] text-xs font-black px-2.5 py-0.5">${data.score}</span>
+                </div>
+
+                <div class="p-5 sm:p-7">
+                    <!-- Avatars Facing Each Other -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-8 mb-6 bg-[#F5EFE6] border-[2.5px] border-[#1A1A1A] p-4">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-[#FFFDF9] border-2 border-[#1A1A1A] p-1 mx-auto">
+                                ${getPixelAvatarSVG(pA.key, 68)}
+                            </div>
+                            <div class="font-black text-xs mt-1.5">${pA.name}</div>
+                            <div class="text-[10px] font-bold text-stone-600">${pA.temperament.split(' ')[0]}</div>
+                        </div>
+
+                        <div class="font-pixel-num text-xl sm:text-2xl ${simMode === 'romance' ? 'text-[#E64848]' : 'text-[#1A1A1A]'}">
+                            ${simMode === 'romance' ? '♥' : '⚡'}
+                        </div>
+
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-[#FFFDF9] border-2 border-[#1A1A1A] p-1 mx-auto">
+                                ${getPixelAvatarSVG(pB.key, 68)}
+                            </div>
+                            <div class="font-black text-xs mt-1.5">${pB.name}</div>
+                            <div class="text-[10px] font-bold text-stone-600">${pB.temperament.split(' ')[0]}</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="border-[2.5px] border-[#1A1A1A] p-4 bg-[#FFFDF9]">
+                            <div class="font-black text-sm mb-1.5">
+                                ${simMode === 'romance' ? '♥ Хосын харилцаа ба Хайр дурлалд:' : '💼 Ажил ба Найз нөхдийн харилцаанд:'}
+                            </div>
+                            <p class="text-sm text-stone-800 leading-relaxed">
+                                ${simMode === 'romance' ? data.romance : data.work}
+                            </p>
+                        </div>
+
+                        <div class="border-[2.5px] border-[#1A1A1A] p-4 bg-[#FFF9D6]">
+                            <div class="font-black text-sm mb-1">★ Алтан зөвлөгөө:</div>
+                            <p class="text-sm font-bold text-[#1A1A1A]">${data.tip}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 10. INITIALIZE ON LOAD
+        // =========================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render intro mascot preview
+            const introBox = document.getElementById('intro-mascots');
+            introBox.innerHTML = ['red', 'yellow', 'green', 'blue']
+                .map(c => `<div class="bg-[#FFFDF9] border-2 border-[#1A1A1A] p-1">${getPixelAvatarSVG(c, 54)}</div>`)
+                .join('');
+
+            renderGuideTab('red');
+            renderSimulator();
+        });
+    </script>
+</body>
+</html>
